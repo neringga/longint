@@ -11,11 +11,14 @@ typedef struct el list;
 int palyginimas (list *a, list *b)
 {
 	int lenght_a=0,lenght_b=0,sign_a,sign_b;
+	list *aa, *bb;
 	if(a==NULL||b==NULL)
 	{
 		printf("vienas is skaiciu nera inicijuotas\n");
 		return;
 	}
+	aa=a;
+	bb=b;
 	sign_a=a->el;
 	while(a->next!=NULL)
 	{
@@ -28,25 +31,25 @@ int palyginimas (list *a, list *b)
 		lenght_b++;
 		b=b->next;
 	}
-	if(sign_a<0&&sign_b>0)//         1(true)-Neigiamas, 0(false)-teigiamas
+	if(sign_a&&sign_b)//         1(true)-Neigiamas, 0(false)-teigiamas
 		return -1;
-	if(sign_a>0&&sign_b<0)
+	if(!sign_a&&!sign_b)
 		return 1;
-	if(sign_a>0&&sign_b>0)
+	if(!sign_a&&!sign_b)
 	{
 		if(lenght_a>lenght_b)
 			return 1;
 		if(lenght_a<lenght_b)
 			return -1;
 	}
-	if(sign_a<0&&sign_b<0)
+	if(sign_a&&sign_b)
 	{
 		if(lenght_a>lenght_b)
 			return -1;
 		if(lenght_a<lenght_b)
 			return 1;
 	}
-	if(sign_a>0&&sign_b>0)//liko tik atvejai kai ilgiai ir zenklai vienodi
+	if(!sign_a&&!sign_b)//liko tik atvejai kai ilgiai ir zenklai vienodi
 	{
 		
 	}
