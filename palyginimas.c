@@ -1,10 +1,12 @@
 #include<stdio.h>
 #include"palyginimas.h"
 
-struct list{
-	int el;
-	struct list *kitas;
+struct el{
+	int data;
+	struct el *next;
 };
+
+typedef struct el list;
 
 int palyginimas (list *a, list *b)
 {

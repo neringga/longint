@@ -2,9 +2,9 @@
 #include<stdlib.h>
 #include"suma.h"
 
-struct list{
-	int el;
-	struct list *kitas;
+struct el{
+	int data;
+	struct el *next;
 };
 
 void atimtis(list *a, list *b, list **c)
