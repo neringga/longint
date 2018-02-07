@@ -10,45 +10,43 @@ typedef struct el list;
 
 int palyginimas (list *a, list *b)
 {
-	int ilgis_a=0,ilgis_b=0,zenklas_a,zenklas_b;
+	int lenght_a=0,lenght_b=0,sign_a,sign_b;
 	if(a==NULL||b==NULL)
 	{
 		printf("vienas is skaiciu nera inicijuotas\n");
 		return;
 	}
-	while(a->kitas!=NULL)
+	sign_a=a->el;
+	while(a->next!=NULL)
 	{
-		ilgis_a++;
-		a=a->kitas;
+		lenght_a++;
+		a=a->next;
 	}
-	zenklas_a=a->el;
-	ilgis_a++;
-	while(b->kitas!=NULL)
+	sign_b=b->el;
+	while(b->next!=NULL)
 	{
-		ilgis_b++;
-		b=b->kitas;
+		lenght_b++;
+		b=b->next;
 	}
-	zenklas_b=b->el;
-	ilgis_b++;
-	if(zenklas_a<0&&zenklas_b>0)
+	if(sign_a<0&&sign_b>0)//         1(true)-Neigiamas, 0(false)-teigiamas
 		return -1;
-	if(zenklas_a>0&&zenklas_b<0)
+	if(sign_a>0&&sign_b<0)
 		return 1;
-	if(zenklas_a>0&&zenklas_b>0)
+	if(sign_a>0&&sign_b>0)
 	{
-		if(ilgis_a>ilgis_b)
+		if(lenght_a>lenght_b)
 			return 1;
-		if(ilgis_a<ilgis_b)
+		if(lenght_a<lenght_b)
 			return -1;
 	}
-	if(zenklas_a<0&&zenklas_b<0)
+	if(sign_a<0&&sign_b<0)
 	{
-		if(ilgis_a>ilgis_b)
+		if(lenght_a>lenght_b)
 			return -1;
-		if(ilgis_a<ilgis_b)
+		if(lenght_a<lenght_b)
 			return 1;
 	}
-	if(zenklas_a>0&&zenklas_b>0)\\liko tik atvejai kai ilgiai ir zenklai vienodi
+	if(sign_a>0&&sign_b>0)//liko tik atvejai kai ilgiai ir zenklai vienodi
 	{
 		
 	}

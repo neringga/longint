@@ -7,10 +7,10 @@ struct el{
 	struct el *next;
 };
 
+typedef struct el list;
+
 void atimtis(list *a, list *b, list **c)
 {
-	int atimtis,perpildymas=0;
-	list *laikinas;
 	if(a==NULL||b==NULL)
 	{
 		printf("Vienas is sveiku skaiciu nera inicijuotas\n");
@@ -21,9 +21,5 @@ void atimtis(list *a, list *b, list **c)
 		printf("Atsakymo skaicius jau yra inicijuotas\n");
 		return;
 	}
-	*c=malloc(sizeof(list));
-	laikinas=*c;
-	do{
-	}while(a->kitas!=NULL&&b->kitas!=NULL);
 	
 }
