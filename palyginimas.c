@@ -1,32 +1,17 @@
 #include<stdio.h>
-#include"palyginimas.h"
-
-struct el{
-	int data;
-	struct el *next;
-};
+#include"compare.h"
 
 typedef struct el list;
 
-int palyginimas (list *a, list *b);
-
-int main ()
-{
-	int i;
-	list *a,*b;
-	i=palyginimas(a,b);
-	return 0;
-}
-
-int palyginimas (list *a, list *b)
+int compare (list *a, list *b)
 {
 	int lenght_a=0,lenght_b=0,sign_a,sign_b,compare;
 	list *aa, *bb;
-	if(a==NULL||b==NULL)
+	/*if(a->next==NULL||b->next==NULL)
 	{
 		printf("vienas is skaiciu nera inicijuotas\n");
 		return;
-	}
+	}*/
 	aa=a;
 	bb=b;
 	sign_a=a->data;
@@ -41,9 +26,9 @@ int palyginimas (list *a, list *b)
 		lenght_b++;
 		b=b->next;
 	}
-	if(sign_a&&sign_b)//         kai zenklai skirtingi                    1(true)-Neigiamas, 0(false)-teigiamas
+	if(sign_a&&!sign_b)//         kai zenklai skirtingi                    1(true)-Neigiamas, 0(false)-teigiamas
 		return -1;
-	if(!sign_a&&!sign_b)
+	if(!sign_a&&sign_b)
 		return 1;
 	if(!sign_a&&!sign_b)//       kai zenklai vienodi, bet skirtingi igiai
 	{
