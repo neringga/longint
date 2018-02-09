@@ -1,5 +1,7 @@
+//mano INICIJAVIMAS SUDETIS DAUGYBA
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct el {
 	int data;
@@ -8,6 +10,30 @@ struct el {
 	
 // typedef struct el LIST;
 
+void create_the_list(struct el **);
+void insert_element(struct el **, int );
+void creating_longint_as_a_list (struct el **, char []);
+void displayList(struct el *);
+
+int main ()
+{
+	char M[] = "0001234567890";
+	char M1[] = "-1234";  
+	struct el *longNumber;
+	struct el *longNumber2;
+	int i;
+	
+	
+	creating_longint_as_a_list(&longNumber, M);
+	creating_longint_as_a_list(&longNumber2, M1);
+	
+	
+	
+	displayList(longNumber);
+	
+	return 0;
+}
+
 void create_the_list (struct el **head) 
 { 
 	*head=NULL;
@@ -15,11 +41,11 @@ void create_the_list (struct el **head)
 
 void insert_element(struct el **head, int n) 
 {
-	LIST *temp;
-	LIST *p;
+	struct el *temp;
+	struct el *p;
 	
-	temp=(LIST *)malloc(sizeof(LIST));
-	temp->data = n;
+	temp=(struct el *)malloc(sizeof(struct el));
+	temp->data = n ;
 	temp->next = NULL;
 		
 		if (*head == NULL) {
@@ -38,53 +64,58 @@ void insert_element(struct el **head, int n)
 	
 }
 
-void reading_long_integer (int M[])                             //KODEL AS CIA NEGALIU ISKART I SARASA?
+void creating_longint_as_a_list (struct el **head, char M[])
 {
-	// char sign;
-	int a;
 	int i = 0;
-	int numberOfElements = 0;
+	int first_zeros = 0;
+	create_the_list(head);
 	
-	while ((a != 32) || (a != 13))				//nzn del to 13, cia tik CR
+	if ( M[i] == '-' )
 	{
-		scanf("%d", M[i]);
-		i++;
-		numberOfElements++;
+		insert_element(head, 1);			//first element of the list shows whether the number is negative or positive (1 for negative).
+		i = 1;
+	}
+	else 
+	{
+		insert_element(head, 0);			// 0 for positive
+	}
+	
+	while (i < strlen(M))
+	{
+		if ((M[i] != '0') || (first_zeros == 1) || ( i+1 == strlen(M)) )         //when person enters number with zeros at the beggining
+		{
+			insert_element(head, M[i] - 48);
+			i++;
+		}
+		else
+		{
+			i++;
+			if (M[i] != '0')
+			{
+				first_zeros = 1;
+			}
+		}
 	}
 	
 }
 
-void creating_longint_as_a_list (struct el **head, int M[])
+void displayList(struct el *head) 
 {
-	int i = 0;
+	struct el *p = head;
 	
-	create_the_list(*head);
-	
-	if ( M[i] == 45 )			//ascii for minus
+	if (p == NULL) 
 	{
-		insert_element(*head, 1);			//first element of the list shows whether the number is negative or positive (1 for negative).
+		printf("Sarasas nesukurtas");
 	}
-	else
+	else 
 	{
-		insert_element(*head, 0);			// 0 for positive
+		
+		while (p != NULL)
+			{
+			printf ("%d", p->data);
+			p = p->next;
+			}
+			
 	}
-	
-	for ( i = 1; i < numberOfElements; i++)
-	{
-		insert_element(*head, M[i]);
-	}
-}
-
-
-
-int main ()
-{
-	char sign;
-	int a;
-	
-	
-	
-	
-	
-	return 0;
+		
 }
