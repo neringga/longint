@@ -62,7 +62,8 @@ int compare (list *a, list *b)
 
 void subtraction (list *a, list *b, list **c)
 {
-	int q;
+	int q,sign_a,sign_b,sign_c;
+	list *aa,*bb,*cc;
 	/*if(a==NULL||b==NULL)
 	{
 		printf("Vienas is sveiku skaiciu nera inicijuotas\n");
@@ -73,6 +74,37 @@ void subtraction (list *a, list *b, list **c)
 		printf("Atsakymo skaicius jau yra inicijuotas\n");
 		return;
 	}*/
-	q=compare(a,b);
-	
+	sign_a=a->data;
+	sign_b=b->data;
+	if(sign_a==sign_b)//                                                 1(true)-Neigiamas, 0(false)-teigiamas
+	{
+		 q=compare(a,b)///////////////////////////////////
+		 if(q)
+		 {
+			 
+		 }
+		 else
+		 {
+			*c=malloc(sizeof(list));
+			*c->data=0;
+			*c->next=malloc(sizeof(list));
+			*c->next->data=0;
+			*c->next->next=NULL;
+		 }
+	}
+	else//        tikrinama del c elemento zenklo ir kvieciama sudeties funkcija
+	{
+		if(sign_a)
+		{
+			a->data=0;
+			sign_c=1;
+		}
+		else
+		{
+			b->data=0;
+			sign_c=0;
+		}
+		addition(a,b,c)
+		*c->data=sign_c;
+	}
 }
