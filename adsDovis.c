@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include"ADS.h"
 
 typedef struct el list;
@@ -62,8 +63,8 @@ int compare (list *a, list *b)
 
 void subtraction (list *a, list *b, list **c)
 {
-	int q,sign_a,sign_b,sign_c;
-	list *aa,*bb,*cc;
+	int q,sign_a,sign_b,lenght_a,lenght_b,overflow=0,i;
+	list *aa,*bb,*temp;
 	/*if(a==NULL||b==NULL)
 	{
 		printf("Vienas is sveiku skaiciu nera inicijuotas\n");
@@ -74,37 +75,101 @@ void subtraction (list *a, list *b, list **c)
 		printf("Atsakymo skaicius jau yra inicijuotas\n");
 		return;
 	}*/
+	*c=NULL;
 	sign_a=a->data;
 	sign_b=b->data;
 	if(sign_a==sign_b)//                                                 1(true)-Neigiamas, 0(false)-teigiamas
 	{
-		 q=compare(a,b)///////////////////////////////////
-		 if(q)
-		 {
-			 
+		q=compare(a,b);
+		if(q)
+		{
+			if(q<0)
+			{
+				temp=aa;
+				aa=bb;
+				bb=temp;
+			}
+			aa=a;
+			bb=b;
+			while(a->next!=NULL)
+			{
+				lenght_a++;
+				a=a->next;
+			}
+			while(b->next!=NULL)
+			{
+				lenght_b++;
+				b=b->next;
+			}
+			do
+			{
+				a=aa->next;
+			 	b=bb->next;
+				for(i=1;i<lenght_a;i++)
+					a=a->next;				
+				for(i=1;i<lenght_b;i++)
+					b=b->next;		
+				temp=malloc(sizeof(list));
+				temp->data=a->data-b->data-overflow;
+				overflow=0;
+				if(temp->data<0)
+				{
+					temp->data=temp->data*-1;
+					overflow=1;
+				}
+				temp->next=*c;
+				*c=temp;
+				lenght_a--;
+				lenght_b--;
+			}while(lenght_a&&lenght_b);
+			if(lenght_a)
+			{
+				a=aa;
+			 	for(i=1;i<lenght_a;i++)
+			 		a=a->next;
+				temp=malloc(sizeof(list));
+				temp->data=a->data;
+				temp->next=*c;
+				*c=temp;
+			}
+			while((*c)->data==0)
+			{
+				temp=(*c)->next;
+				free(*c);
+				*c=temp;
+			}
+			temp=malloc(sizeof(list));
+			temp->next=*c;
+			*c=temp;
+			if(q==1)
+				(*c)->data=0;
+			if(q==-1)
+			{
+				(*c)->data=1;
+				temp=aa;
+				aa=bb;
+				bb=temp;
+			}
 		 }
 		 else
 		 {
 			*c=malloc(sizeof(list));
-			*c->data=0;
-			*c->next=malloc(sizeof(list));
-			*c->next->data=0;
-			*c->next->next=NULL;
+			(*c)->data=0;
+			(*c)->next=malloc(sizeof(list));
+			(*c)->next->data=0;
+			(*c)->next->next=NULL;
 		 }
 	}
 	else//        tikrinama del c elemento zenklo ir kvieciama sudeties funkcija
 	{
 		if(sign_a)
 		{
-			a->data=0;
-			sign_c=1;
+			b->data=1;
 		}
 		else
 		{
 			b->data=0;
-			sign_c=0;
 		}
 		addition(a,b,c)
-		*c->data=sign_c;
 	}
 }
