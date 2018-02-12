@@ -2,13 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include"ADS.h"
 
-struct el {
+/*struct el {
 	int data;
 	struct el *next;                    
-	};
+	};*/
 	
-// typedef struct el LIST;
+//typedef struct el LIST;
 
 void create_the_list(struct el **);
 void insert_element_at_the_end(struct el **, int );
@@ -19,18 +20,17 @@ void displayList(struct el *);
 
 int main ()
 {
-	char M[] = "-0000005678";
-	char M1[] = "-3";  
+	char M[] = "-1000";
+	char M1[] = "-99";  
 	struct el *longNumber;
 	struct el *longNumber2;
 	struct el *sum;
 	int i;
 	
-	
 	creating_longint_as_a_list(&longNumber, M);
 	creating_longint_as_a_list(&longNumber2, M1);
-	check_before_addition(longNumber, longNumber2, &sum);
-	
+	//check_before_addition(longNumber, longNumber2, &sum);
+	subtraction(longNumber,longNumber2,&sum);
 	
 	
 	displayList(sum);
@@ -118,6 +118,7 @@ void creating_longint_as_a_list (struct el **head, char M[])
 		if ((M[i] != '0') || (first_zeros == 1) || ( i+1 == strlen(M)) )         //when person enters number with zeros at the beggining
 		{
 			insert_element_at_the_end(head, M[i] - 48);
+			first_zeros=1;
 			i++;
 		}
 		else
@@ -278,7 +279,7 @@ void displayList(struct el *head)
 	else 
 	{
 		
-		while (p->next != NULL)
+		while (p != NULL)
 			{
 			printf ("%d ", p->data);
 			p = p->next;
