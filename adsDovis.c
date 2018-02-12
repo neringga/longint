@@ -106,9 +106,9 @@ void subtraction (list *a, list *b, list **c)
 				a=aa->next;
 			 	b=bb->next;
 				for(i=1;i<lenght_a;i++)
-					a=a->next;				
+					a=a->next;	
 				for(i=1;i<lenght_b;i++)
-					b=b->next;		
+					b=b->next;
 				temp=malloc(sizeof(list));
 				temp->data=a->data-b->data-overflow;
 				overflow=0;
@@ -144,12 +144,7 @@ void subtraction (list *a, list *b, list **c)
 			if(q==1)
 				(*c)->data=0;
 			if(q==-1)
-			{
 				(*c)->data=1;
-				temp=aa;
-				aa=bb;
-				bb=temp;
-			}
 		 }
 		 else
 		 {
@@ -165,11 +160,54 @@ void subtraction (list *a, list *b, list **c)
 		if(sign_a)
 		{
 			b->data=1;
+			addition(a,b,c);
+			b->data=0;
 		}
 		else
 		{
 			b->data=0;
+			addition(a,b,c);
+			b->data=1;
 		}
-		addition(a,b,c)
 	}
+}
+
+int division(list *a, list *b, list **c, list **d)
+{
+	int q,sign_a,sign_b;
+	list *quotient,*temp;
+	if(!b->next->data)
+	{
+		return 1;
+	}
+	if(!a->next->data)
+	{
+		*c=malloc(sizeof(list));
+		(*c)->data=0;
+		(*c)->next=malloc(sizeof(list));
+		(*c)->next->data=0;
+		(*c)->next->next=NULL;
+	}
+	else
+	{
+		temp=malloc(sizeof(list));
+		quotient=temp;
+		temp->data=a->data;
+		temp=temp->next;
+		a=a->next;
+		while(a!=NULL)
+		{
+			temp=malloc(sizeof(list));
+			temp->data=a->data;
+			temp=temp->next;
+			a=a->next;
+		}
+		q=compare(quotient,b);
+		while(q=>0)// ////////////////////////////////////////////////
+		{
+			
+			subtraction(quotient,b);
+			q=compare(quotient,b);
+		}
+	}	
 }
