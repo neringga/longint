@@ -63,7 +63,7 @@ int compare (list *a, list *b)
 
 void subtraction (list *a, list *b, list **c)
 {
-	int q,sign_a,sign_b,lenght_a,lenght_b,overflow=0,i;
+	int q,sign_a,sign_b,lenght_a=0,lenght_b=0,overflow=0,i;
 	list *aa,*bb,*temp;
 	/*if(a==NULL||b==NULL)
 	{
@@ -85,9 +85,9 @@ void subtraction (list *a, list *b, list **c)
 		{
 			if(q<0)
 			{
-				temp=aa;
-				aa=bb;
-				bb=temp;
+				temp=a;
+				a=b;
+				b=temp;
 			}
 			aa=a;
 			bb=b;
@@ -106,7 +106,7 @@ void subtraction (list *a, list *b, list **c)
 				a=aa->next;
 			 	b=bb->next;
 				for(i=1;i<lenght_a;i++)
-					a=a->next;	
+					a=a->next;
 				for(i=1;i<lenght_b;i++)
 					b=b->next;
 				temp=malloc(sizeof(list));
@@ -114,15 +114,15 @@ void subtraction (list *a, list *b, list **c)
 				overflow=0;
 				if(temp->data<0)
 				{
-					temp->data=temp->data*-1;
+					temp->data=temp->data+10;
 					overflow=1;
 				}
 				temp->next=*c;
 				*c=temp;
 				lenght_a--;
 				lenght_b--;
-			}while(lenght_a&&lenght_b);
-			if(lenght_a)
+			}while(lenght_b);
+			while(lenght_a)
 			{
 				a=aa;
 			 	for(i=1;i<lenght_a;i++)
@@ -131,12 +131,13 @@ void subtraction (list *a, list *b, list **c)
 				temp->data=a->data;
 				temp->next=*c;
 				*c=temp;
+				lenght_a--;
 			}
 			while((*c)->data==0)
 			{
-				temp=(*c)->next;
-				free(*c);
-				*c=temp;
+				temp=*c;
+				*c=temp->next;
+				free(temp);
 			}
 			temp=malloc(sizeof(list));
 			temp->next=*c;
@@ -187,11 +188,18 @@ int division(list *a, list *b, list **c, list **d)
 		(*c)->next=malloc(sizeof(list));
 		(*c)->next->data=0;
 		(*c)->next->next=NULL;
+		*d=malloc(sizeof(list));
+		(*d)->data=0;
+		(*d)->next=malloc(sizeof(list));
+		(*d)->next->data=0;
+		(*d)->next->next=NULL;
 	}
 	else
 	{
+		sign_a=a->data;
+		sign_b=b->data;
 		temp=malloc(sizeof(list));
-		quotient=temp;
+		*d=temp;
 		temp->data=a->data;
 		temp=temp->next;
 		a=a->next;
@@ -202,12 +210,61 @@ int division(list *a, list *b, list **c, list **d)
 			temp=temp->next;
 			a=a->next;
 		}
-		q=compare(quotient,b);
-		while(q=>0)// ////////////////////////////////////////////////
+		(*d)->data=0;
+		b->data=0;
+		q=compare(*d,b);
+		quotient=malloc(sizeof(list));
+		quotient->data=0;
+		quotient->next=NULL;
+		*c=quotient;
+		while(q>=0)
 		{
-			
-			subtraction(quotient,b);
-			q=compare(quotient,b);
+			if((*c)->data==10)
+			{
+				quotient=*c;
+				while(quotient->next!=NULL&&quotient->data==10)
+				{
+					quotient->data=0;
+					quotient=quotient->next;
+					quotient->data++;
+				}
+				if(quotient->next==NULL&&quotient->data==10)
+				{
+					quotient->data=0;
+					quotient->next=malloc(sizeof(list));
+					quotient=quotient->next;
+					quotient->data=1;
+					quotient->next=NULL;
+				}
+			}
+			(*c)->data++;
+			subtraction(*d,b,&temp);
+			while(*d!=NULL)
+			{
+				free(*d);
+				*d=(*d)->next;
+			}
+			*d=temp;
+			q=compare(*d,b);
 		}
-	}	
+		quotient=*c;
+		*c=NULL;
+		do
+		{
+			temp=malloc(sizeof(list));
+			temp->next=*c;
+			*c=temp;
+			(*c)->data=quotient->data;
+			free(quotient);
+			quotient=quotient->next;
+		}while(quotient!=NULL);
+		temp=malloc(sizeof(list));
+		if(sign_a==sign_b)//                                                 1(true)-Neigiamas, 0(false)-teigiamas
+			temp->data=0;
+		else
+			temp->data=1;
+		temp->next=*c;
+		*c=temp;
+	}
+	return 0;
 }
