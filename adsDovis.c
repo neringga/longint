@@ -91,16 +91,12 @@ void subtraction (list *a, list *b, list **c)
 			}
 			aa=a;
 			bb=b;
-			while(a->next!=NULL)
-			{
+			while((a=a->next)!=NULL)
 				lenght_a++;
-				a=a->next;
-			}
-			while(b->next!=NULL)
-			{
+			lenght_a--;
+			while((b=b->next)!=NULL)
 				lenght_b++;
-				b=b->next;
-			}
+			lenght_b--;
 			do
 			{
 				a=aa->next;
@@ -124,9 +120,9 @@ void subtraction (list *a, list *b, list **c)
 			}while(lenght_b);
 			while(lenght_a)
 			{
-				a=aa;
+				a=aa->next;
 			 	for(i=1;i<lenght_a;i++)
-			 		a=a->next;
+					a=a->next;
 				temp=malloc(sizeof(list));
 				temp->data=a->data;
 				temp->next=*c;
