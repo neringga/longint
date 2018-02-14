@@ -32,7 +32,6 @@ int main ()
 	check_before_addition(longNumber, longNumber2, &sum);
 	
 	
-	
 	displayList(sum);
 	
 	return 0;
@@ -118,6 +117,7 @@ void creating_longint_as_a_list (struct el **head, char M[])
 		if ((M[i] != '0') || (first_zeros == 1) || ( i+1 == strlen(M)) )         //when person enters number with zeros at the beggining
 		{
 			insert_element_at_the_end(head, M[i] - 48);
+			first_zeros = 1;
 			i++;
 		}
 		else
@@ -278,7 +278,7 @@ void displayList(struct el *head)
 	else 
 	{
 		
-		while (p->next != NULL)
+		while (p != NULL)
 			{
 			printf ("%d ", p->data);
 			p = p->next;
