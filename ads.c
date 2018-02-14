@@ -19,20 +19,24 @@ void displayList(struct el *);
 
 int main ()
 {
-	char M[] = "-0000005678";
-	char M1[] = "-3";  
-	struct el *longNumber;
-	struct el *longNumber2;
+	char M[] = "-1001";
+	char M1[] = "-309";  
+	struct el *longNumber=NULL;
+	struct el *longNumber2=NULL;
 	struct el *sum;
 	int i;
 	
 	
 	creating_longint_as_a_list(&longNumber, M);
 	creating_longint_as_a_list(&longNumber2, M1);
-	check_before_addition(longNumber, longNumber2, &sum);
+	//check_before_addition(longNumber, longNumber2, &sum);
+	subtraction(longNumber,longNumber2,&sum);
 	
 	
-	
+	displayList(longNumber);
+	printf("\t");
+	displayList(longNumber2);
+	printf("\n");
 	displayList(sum);
 	
 	return 0;
@@ -112,7 +116,6 @@ void creating_longint_as_a_list (struct el **head, char M[])
 	{
 		insert_element_at_the_end(head, 0);			// 0 for positive
 	}
-	
 	while (i < strlen(M))
 	{
 		if ((M[i] != '0') || (first_zeros == 1) || ( i+1 == strlen(M)) )         //when person enters number with zeros at the beggining
@@ -130,7 +133,6 @@ void creating_longint_as_a_list (struct el **head, char M[])
 			}
 		}
 	}
-	
 }
 
 void addition (struct el *a, struct el *b, struct el **sum)
@@ -279,12 +281,11 @@ void displayList(struct el *head)
 	else 
 	{
 		
-		while (p->next != NULL)
+		while (p != NULL)
 			{
 			printf ("%d ", p->data);
 			p = p->next;
 			}
-			
 	}
 		
 }
