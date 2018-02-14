@@ -54,10 +54,14 @@ int compare (list *a, list *b)
 		aa=aa->next;
 		bb=bb->next;
 	}
-	if(compare>0)
+	if(compare>0&&!sign_a)
 		return 1;
-	if(compare<0)
+	if(compare>0&&sign_a)
 		return -1;
+	if(compare<0&&!sign_a)
+		return -1;
+	if(compare<0&&sign_a)
+		return 1;
 	return 0;
 }
 
@@ -80,7 +84,11 @@ void subtraction (list *a, list *b, list **c)
 	sign_b=b->data;
 	if(sign_a==sign_b)//                                                 1(true)-Neigiamas, 0(false)-teigiamas
 	{
+		a->data=0;
+		b->data=0;
 		q=compare(a,b);
+		a->data=sign_a;
+		b->data=sign_b;
 		if(q)
 		{
 			if(q<0)
@@ -93,10 +101,8 @@ void subtraction (list *a, list *b, list **c)
 			bb=b;
 			while((a=a->next)!=NULL)
 				lenght_a++;
-			lenght_a--;
 			while((b=b->next)!=NULL)
 				lenght_b++;
-			lenght_b--;
 			do
 			{
 				a=aa->next;
@@ -124,7 +130,13 @@ void subtraction (list *a, list *b, list **c)
 			 	for(i=1;i<lenght_a;i++)
 					a=a->next;
 				temp=malloc(sizeof(list));
-				temp->data=a->data;
+				if(overflow)
+				{
+					temp->data=a->data-overflow;
+					overflow=0;
+				}
+				else
+					temp->data=a->data;
 				temp->next=*c;
 				*c=temp;
 				lenght_a--;
@@ -138,10 +150,14 @@ void subtraction (list *a, list *b, list **c)
 			temp=malloc(sizeof(list));
 			temp->next=*c;
 			*c=temp;
-			if(q==1)
+			if(q==1&&!sign_a)
 				(*c)->data=0;
-			if(q==-1)
+			if(q==1&&sign_a)
 				(*c)->data=1;
+			if(q==-1&&!sign_a)
+				(*c)->data=1;
+			if(q==-1&&sign_a)
+				(*c)->data=0;
 		 }
 		 else
 		 {
