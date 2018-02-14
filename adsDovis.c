@@ -1,6 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include"ADS.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "ADS.h"
 
 typedef struct el list;
 
@@ -133,7 +133,13 @@ void subtraction (list *a, list *b, list **c)
 				if(overflow)
 				{
 					temp->data=a->data-overflow;
-					overflow=0;
+					if(temp->data<0)
+					{
+						temp->data+=10;
+						overflow=1;
+					}
+					else
+						overflow=0;
 				}
 				else
 					temp->data=a->data;
@@ -188,7 +194,7 @@ void subtraction (list *a, list *b, list **c)
 int division(list *a, list *b, list **c, list **d)
 {
 	int q,sign_a,sign_b;
-	list *quotient,*temp;
+	list *quotient,*temp,*temp2;
 	if(!b->next->data)
 	{
 		return 1;
@@ -213,15 +219,15 @@ int division(list *a, list *b, list **c, list **d)
 		temp=malloc(sizeof(list));
 		*d=temp;
 		temp->data=a->data;
-		temp=temp->next;
 		a=a->next;
 		while(a!=NULL)
 		{
-			temp=malloc(sizeof(list));
-			temp->data=a->data;
+			temp->next=malloc(sizeof(list));
 			temp=temp->next;
+			temp->data=a->data;
 			a=a->next;
 		}
+		temp->next=NULL;
 		(*d)->data=0;
 		b->data=0;
 		q=compare(*d,b);
@@ -231,6 +237,7 @@ int division(list *a, list *b, list **c, list **d)
 		*c=quotient;
 		while(q>=0)
 		{
+			(*c)->data++;
 			if((*c)->data==10)
 			{
 				quotient=*c;
@@ -249,12 +256,12 @@ int division(list *a, list *b, list **c, list **d)
 					quotient->next=NULL;
 				}
 			}
-			(*c)->data++;
 			subtraction(*d,b,&temp);
 			while(*d!=NULL)
 			{
+				temp2=(*d)->next;
 				free(*d);
-				*d=(*d)->next;
+				*d=temp2;
 			}
 			*d=temp;
 			q=compare(*d,b);
@@ -267,16 +274,24 @@ int division(list *a, list *b, list **c, list **d)
 			temp->next=*c;
 			*c=temp;
 			(*c)->data=quotient->data;
+			temp=quotient->next;
 			free(quotient);
-			quotient=quotient->next;
+			quotient=temp;
 		}while(quotient!=NULL);
 		temp=malloc(sizeof(list));
 		if(sign_a==sign_b)//                                                 1(true)-Neigiamas, 0(false)-teigiamas
+		{
 			temp->data=0;
+			(*d)->data=0;
+		}
 		else
+		{
 			temp->data=1;
+			(*d)->data=1;
+		}
 		temp->next=*c;
 		*c=temp;
+		b->data=sign_b;
 	}
 	return 0;
 }

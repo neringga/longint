@@ -19,21 +19,29 @@ void displayList(struct el *);
 
 int main ()
 {
-	char M[] = "-1001";
-	char M1[] = "-309";  
+	char M[] = "-1000";
+	char M1[] = "3";  
 	struct el *longNumber=NULL;
 	struct el *longNumber2=NULL;
-	struct el *sum;
-	int i;
+	struct el *sum=NULL, *sum2=NULL;
+	int i=0;
 	
 	
 	creating_longint_as_a_list(&longNumber, M);
 	creating_longint_as_a_list(&longNumber2, M1);
 	//check_before_addition(longNumber, longNumber2, &sum);
-	subtraction(longNumber,longNumber2,&sum);
-	
+	i=division(longNumber, longNumber2, &sum, &sum2);
 
+	displayList(longNumber);
+	printf("\t");
+	displayList(longNumber2);
+	printf("\n");
+
+	if(!i){
 	displayList(sum);
+	printf("\t");
+	displayList(sum2);
+	printf("\n");}
 	
 	return 0;
 }
