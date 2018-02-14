@@ -32,14 +32,7 @@ int main ()
 	//check_before_addition(longNumber, longNumber2, &sum);
 	subtraction(longNumber,longNumber2,&sum);
 	
-<<<<<<< HEAD
-=======
-	
-	displayList(longNumber);
-	printf("\t");
-	displayList(longNumber2);
-	printf("\n");
->>>>>>> bug
+
 	displayList(sum);
 	
 	return 0;
