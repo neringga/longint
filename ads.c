@@ -29,14 +29,9 @@ int main ()
 	
 	creating_longint_as_a_list(&longNumber, M);
 	creating_longint_as_a_list(&longNumber2, M1);
-	//check_before_addition(longNumber, longNumber2, &sum);
-	subtraction(longNumber,longNumber2,&sum);
+	check_before_addition(longNumber, longNumber2, &sum);
 	
-	
-	displayList(longNumber);
-	printf("\t");
-	displayList(longNumber2);
-	printf("\n");
+
 	displayList(sum);
 	
 	return 0;
