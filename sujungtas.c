@@ -522,11 +522,8 @@ int compare (list *a, list *b)
 {
 	int lenght_a=0,lenght_b=0,sign_a,sign_b,compare;
 	list *aa, *bb;
-	/*if(a->next==NULL||b->next==NULL)
-	{
-		printf("vienas is skaiciu nera inicijuotas\n");
-		return;
-	}*/
+	if(a==NULL||b==NULL)
+		return 3;
 	aa=a;
 	bb=b;
 	sign_a=a->data;
@@ -579,21 +576,14 @@ int compare (list *a, list *b)
 	return 0;
 }
 
-void subtraction (list *a, list *b, list **c)
+int subtraction (list *a, list *b, list **c)
 {
-	int q,sign_a,sign_b,lenght_a=0,lenght_b=0,overflow=0,i, fail;
+	int q=0,sign_a,sign_b,lenght_a=0,lenght_b=0,overflow=0,i, fail;
 	list *aa,*bb,*temp;
-	/*if(a==NULL||b==NULL)
-	{
-		printf("Vienas is sveiku skaiciu nera inicijuotas\n");
-		return;
-	}
+	if(a==NULL||b==NULL)
+		return 3;
 	if(*c!=NULL)
-	{
-		printf("Atsakymo skaicius jau yra inicijuotas\n");
-		return;
-	}*/
-	*c=NULL;
+		return 4;
 	sign_a=a->data;
 	sign_b=b->data;
 	if(sign_a==sign_b)//                                                 1(true)-Neigiamas, 0(false)-teigiamas
@@ -626,6 +616,16 @@ void subtraction (list *a, list *b, list **c)
 				for(i=1;i<lenght_b;i++)
 					b=b->next;
 				temp=malloc(sizeof(list));
+				if(temp==NULL)
+				{
+					while(*c!=NULL)
+					{
+						temp=(*c)->next;
+						free(*c);
+						*c=temp;
+					}
+					return 1;
+				}
 				temp->data=a->data-b->data-overflow;
 				overflow=0;
 				if(temp->data<0)
@@ -644,6 +644,16 @@ void subtraction (list *a, list *b, list **c)
 			 	for(i=1;i<lenght_a;i++)
 					a=a->next;
 				temp=malloc(sizeof(list));
+				if(temp==NULL)
+				{
+					while(*c!=NULL)
+					{
+						temp=(*c)->next;
+						free(*c);
+						*c=temp;
+					}
+					return 1;
+				}
 				if(overflow)
 				{
 					temp->data=a->data-overflow;
@@ -668,6 +678,16 @@ void subtraction (list *a, list *b, list **c)
 				free(temp);
 			}
 			temp=malloc(sizeof(list));
+			if(temp==NULL)
+			{
+				while(*c!=NULL)
+				{
+					temp=(*c)->next;
+					free(*c);
+					*c=temp;
+				}
+				return 1;
+			}
 			temp->next=*c;
 			*c=temp;
 			if(q==1&&!sign_a)
@@ -682,8 +702,15 @@ void subtraction (list *a, list *b, list **c)
 		 else
 		 {
 			*c=malloc(sizeof(list));
+			if(*c==NULL)
+				return 1;
 			(*c)->data=0;
 			(*c)->next=malloc(sizeof(list));
+			if((*c)->next==NULL)
+			{
+				free(*c);
+				return 1;
+			}
 			(*c)->next->data=0;
 			(*c)->next->next=NULL;
 		 }
@@ -693,14 +720,18 @@ void subtraction (list *a, list *b, list **c)
 		if(sign_a)
 		{
 			b->data=1;
-			addition(a,b,c,&fail);
+			q=addition(a,b,c,&fail);
 			b->data=0;
+			if(q)
+				return q;
 		}
 		else
 		{
 			b->data=0;
-			addition(a,b,c, &fail);
+			q=addition(a,b,c, &fail);
 			b->data=1;
+			if(q)
+				return q;
 		}
 	}
 }
@@ -709,20 +740,36 @@ int division(list *a, list *b, list **c, list **d)
 {
 	int q,sign_a,sign_b;
 	list *quotient,*temp,*temp2;
+	if(a==NULL||b==NULL)
+		return 3;
+	if(*c!=NULL||*d!=NULL)
+		return 4;
 	if(!b->next->data)
-	{
-		return 1;
-	}
+		return 2;
 	if(!a->next->data)
 	{
 		*c=malloc(sizeof(list));
+		if(*c==NULL)
+			return 1;
 		(*c)->data=0;
 		(*c)->next=malloc(sizeof(list));
+		if((*c)->next==NULL)
+		{
+			free (*c);
+			return 1;
+		}
 		(*c)->next->data=0;
 		(*c)->next->next=NULL;
 		*d=malloc(sizeof(list));
+		if(*d==NULL)
+			return 1;
 		(*d)->data=0;
 		(*d)->next=malloc(sizeof(list));
+		if((*d)->next==NULL)
+		{
+			free (*d);
+			return 1;
+		}
 		(*d)->next->data=0;
 		(*d)->next->next=NULL;
 	}
@@ -731,12 +778,24 @@ int division(list *a, list *b, list **c, list **d)
 		sign_a=a->data;
 		sign_b=b->data;
 		temp=malloc(sizeof(list));
+		if(temp==NULL)
+			return 1;
 		*d=temp;
 		temp->data=a->data;
 		a=a->next;
 		while(a!=NULL)
 		{
 			temp->next=malloc(sizeof(list));
+			if(temp->next==NULL)
+			{
+				while(*d!=NULL)
+				{
+					temp=(*d)->next;
+					free(*d);
+					*d=temp;
+				}
+				return 1;
+			}
 			temp=temp->next;
 			temp->data=a->data;
 			a=a->next;
@@ -746,6 +805,16 @@ int division(list *a, list *b, list **c, list **d)
 		b->data=0;
 		q=compare(*d,b);
 		quotient=malloc(sizeof(list));
+		if(quotient==NULL)
+		{
+			while(*d!=NULL)
+			{
+				temp=(*d)->next;
+				free(*d);
+				*d=temp;
+			}
+			return 1;
+		}
 		quotient->data=0;
 		quotient->next=NULL;
 		*c=quotient;
@@ -765,12 +834,31 @@ int division(list *a, list *b, list **c, list **d)
 				{
 					quotient->data=0;
 					quotient->next=malloc(sizeof(list));
+					if(quotient->next==NULL)
+					{
+						while(*d!=NULL)
+						{
+							temp=(*d)->next;
+							free(*d);
+							*d=temp;
+						}
+						while(*c!=NULL)
+						{
+							temp=(*c)->next;
+							free(*c);
+							*c=temp;
+						}
+						return 1;
+					}
 					quotient=quotient->next;
 					quotient->data=1;
 					quotient->next=NULL;
 				}
 			}
-			subtraction(*d,b,&temp);
+			q=0;
+			q=subtraction(*d,b,&temp);
+			if(q)
+				return q;
 			while(*d!=NULL)
 			{
 				temp2=(*d)->next;
@@ -785,6 +873,28 @@ int division(list *a, list *b, list **c, list **d)
 		do
 		{
 			temp=malloc(sizeof(list));
+			if(temp==NULL)
+			{
+				while(*d!=NULL)
+				{
+					temp=(*d)->next;
+					free(*d);
+					*d=temp;
+				}
+				while(*c!=NULL)
+				{
+					temp=(*c)->next;
+					free(*c);
+					*c=temp;
+				}
+				while(quotient!=NULL)
+				{
+					temp=quotient->next;
+					free(quotient);
+					quotient=temp;
+				}
+				return 1;
+			}
 			temp->next=*c;
 			*c=temp;
 			(*c)->data=quotient->data;
@@ -793,6 +903,22 @@ int division(list *a, list *b, list **c, list **d)
 			quotient=temp;
 		}while(quotient!=NULL);
 		temp=malloc(sizeof(list));
+		if(temp==NULL)
+		{
+			while(*d!=NULL)
+			{
+				temp=(*d)->next;
+				free(*d);
+				*d=temp;
+			}
+			while(*c!=NULL)
+			{
+				temp=(*c)->next;
+				free(*c);
+				*c=temp;
+			}
+			return 1;
+		}
 		if(sign_a==sign_b)//                                                 1(true)-Neigiamas, 0(false)-teigiamas
 		{
 			temp->data=0;
